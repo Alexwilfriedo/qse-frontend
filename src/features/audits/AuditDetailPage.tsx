@@ -149,7 +149,7 @@ export function AuditDetailPage() {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `rapport_audit_${audit.id}.pdf`;
+      link.download = `rapport_audit_${audit?.id}.pdf`;
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -160,10 +160,10 @@ export function AuditDetailPage() {
   };
 
   const handleOpenConvoquer = () => {
-    setConvocationDate(audit.datePrevisionnelle || '');
-    setConvocationHeureDebut(audit.heureOuverture || '');
-    setConvocationHeureFin(audit.heureFermeture || '');
-    setConvocationLieu(audit.perimetre || '');
+    setConvocationDate(audit?.datePrevisionnelle || '');
+    setConvocationHeureDebut(audit?.heureOuverture || '');
+    setConvocationHeureFin(audit?.heureFermeture || '');
+    setConvocationLieu(audit?.perimetre || '');
     setConvocationOrdreDuJour('');
     setEnvoyerEmail(true);
     setIsConvoquerOpen(true);

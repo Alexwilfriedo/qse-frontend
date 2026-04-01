@@ -35,7 +35,7 @@ export type AuditType =
   | 'CERTIFICATION'
   | 'SURVEILLANCE';
 
-export type AuditScopeType = 'PROCESSUS' | 'UNITE_TRAVAIL';
+export type AuditScopeType = 'PROCESSUS' | 'SITE' | 'UNITE_TRAVAIL';
 
 export interface AuditTeamView {
   auditeurPrincipalId: string;

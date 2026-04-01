@@ -144,7 +144,7 @@ export function AuditorsPage() {
       <CreateAuditorModal
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
-        onSave={handleCreate}
+        onSave={(data, photoFile) => handleCreate(data as CreateAuditorRequest, photoFile)}
         isPending={createMutation.isPending || uploadPhotoMutation.isPending}
       />
 

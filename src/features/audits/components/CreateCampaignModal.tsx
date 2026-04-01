@@ -167,7 +167,7 @@ export function CreateCampaignModal({
       scopeId: process.id,
       scopeLabel: `${process.codification} - ${process.nom}`,
       managerUserIds: [process.piloteId, process.managerId]
-        .filter(Boolean)
+        .filter((id): id is string => id != null)
         .filter((value, index, array) => array.indexOf(value) === index),
     }));
 
@@ -316,8 +316,8 @@ export function CreateCampaignModal({
       dateExecutionPrevisionnelle: form.dateExecutionPrevisionnelle,
       responsableAuditId: form.responsableAuditId,
       auditeursInternesIds: form.auditeursInternesIds,
-      priorite: form.priorite,
-      executionStatus: form.executionStatus,
+      priorite: form.priorite || undefined,
+      executionStatus: form.executionStatus || undefined,
       surveillanceControle: form.surveillanceControle.trim() || undefined,
     });
   };
