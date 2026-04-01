@@ -29,17 +29,28 @@ export function Modal({
 }: ModalProps) {
   // Compteur pour forcer le remontage des enfants à chaque ouverture
   const openCountRef = useRef(0);
+  const prevIsOpenRef = useRef(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      openCountRef.current += 1;
-    }
-  }, [isOpen]);
+  if (isOpen && !prevIsOpenRef.current) {
+    openCountRef.current += 1;
+  }
+  prevIsOpenRef.current = isOpen;
 
   const panelRef = useRef<HTMLDivElement>(null);
-  const clickedInsideRef = useRef(false);
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
+
+  const handleBackdropMouseDown = (e: React.MouseEvent) => {
+    const target = e.target as Node;
+    // Fermer uniquement si le clic est sur le backdrop (pas sur un portal rendu hors du DOM du modal)
+    if (
+      panelRef.current &&
+      !panelRef.current.contains(target) &&
+      (e.currentTarget as Node).contains(target)
+    ) {
+      onCloseRef.current();
+    }
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -60,29 +71,20 @@ export function Modal({
   if (!isOpen) return null;
 
   return (
-    <div className='fixed inset-0 z-50 overflow-y-auto'>
+    <div className='fixed inset-0 z-50 overflow-y-auto' onMouseDown={handleBackdropMouseDown}>
       <div className='flex min-h-full items-center justify-center p-4'>
         <div
-          className='fixed inset-0 bg-black/50 transition-opacity'
-          onMouseDown={() => {
-            requestAnimationFrame(() => {
-              if (!clickedInsideRef.current) onCloseRef.current();
-              clickedInsideRef.current = false;
-            });
-          }}
+          className='fixed inset-0 bg-black/50 transition-opacity pointer-events-none'
           aria-hidden='true'
         />
         <div
           ref={panelRef}
           className={`
-            relative bg-white dark:bg-gray-800 
-            rounded-lg shadow-xl 
+            relative bg-white dark:bg-gray-800
+            rounded-lg shadow-xl
             w-full ${sizeStyles[size]}
             transform transition-all
-          `}
-          onMouseDown={() => {
-            clickedInsideRef.current = true;
-          }}>
+          `}>
           {title && (
             <div className='px-6 py-4 border-b border-gray-200 dark:border-gray-700'>
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>

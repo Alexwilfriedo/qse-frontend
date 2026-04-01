@@ -327,10 +327,22 @@ function RiskEvaluationCard({ risk }: { risk: Risk }) {
               color={risk.residualCriticalityColor}
             />
             {risk.residualCriticityScore < risk.criticityScore && (
-              <p className='text-xs font-medium text-success-600'>
-                ↓ Réduction de{' '}
-                {risk.criticityScore - risk.residualCriticityScore} points
-              </p>
+              <div className='inline-flex items-center gap-2 rounded-full border border-success-200 bg-success-50 px-3 py-1.5 text-sm font-semibold text-success-700'>
+                <span className='text-base leading-none'>↓</span>
+                <span>
+                  Réduction de {risk.criticityScore - risk.residualCriticityScore}{' '}
+                  points
+                </span>
+              </div>
+            )}
+            {risk.residualCriticityScore > risk.criticityScore && (
+              <div className='inline-flex items-center gap-2 rounded-full border border-error-200 bg-error-50 px-3 py-1.5 text-sm font-semibold text-error-700'>
+                <span className='text-base leading-none'>↑</span>
+                <span>
+                  Augmentation de {risk.residualCriticityScore - risk.criticityScore}{' '}
+                  points
+                </span>
+              </div>
             )}
             <Button
               size='sm'

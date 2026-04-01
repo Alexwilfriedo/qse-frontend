@@ -77,6 +77,13 @@ export function useRiskMatrix() {
   });
 }
 
+export function useRiskComparisonMatrix() {
+  return useQuery({
+    queryKey: [...KEYS.risks, 'matrix', 'comparison'],
+    queryFn: () => risksApi.getRiskComparisonMatrix(),
+  });
+}
+
 export function useRiskStatistics() {
   return useQuery({
     queryKey: [...KEYS.risks, 'statistics'],

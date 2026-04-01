@@ -32,7 +32,6 @@ const navigation: NavItem[] = [
       { name: 'Organigramme', href: '/cartographie/organigramme' },
       { name: 'Cartographie des Processus', href: '/cartographie/processus' },
       { name: 'Unités de travail', href: '/cartographie/unites-travail' },
-      { name: 'Tableau de bord KPI', href: '/dashboard' },
     ],
   },
   {
@@ -120,7 +119,6 @@ const navigation: NavItem[] = [
     icon: RiskIcon,
     children: [
       { name: 'Registre des risques', href: '/risks' },
-      { name: 'Opportunités', href: '/risks/opportunities' },
       { name: 'Matrice de criticité', href: '/risks/matrix' },
       { name: 'Incidents', href: '/incidents' },
       { name: 'DUERP', href: '/risks/reports/duerp' },
@@ -129,11 +127,11 @@ const navigation: NavItem[] = [
         href: '/risks/reports/environmental',
       },
       { name: 'Carto. risques processus', href: '/risks/reports/process-map' },
+      { name: 'Opportunités', href: '/risks/opportunities' },
     ],
   },
-  { name: "Actions d'amélioration", href: '/actions', icon: ActionsIcon },
   {
-    name: 'Audit',
+    name: 'Audit QSE',
     icon: AuditIcon,
     children: [
       { name: 'Base de données auditeurs', href: '/audits/auditors' },
@@ -146,17 +144,17 @@ const navigation: NavItem[] = [
       { name: 'Tableau de Bord & Pilotage des Audits', href: '/audits' },
     ],
   },
+  { name: "Actions d'amélioration", href: '/actions', icon: ActionsIcon },
   {
-    name: 'Auto-évaluation',
-    icon: SelfAssessmentIcon,
+    name: 'KPI Report',
+    icon: KpiReportIcon,
     children: [
-      { name: 'Configuration grille', href: '/self-assessment/config' },
-      { name: 'Campagnes', href: '/self-assessment/campaigns' },
-      { name: 'Dashboard Maturité', href: '/self-assessment/dashboard' },
+      { name: 'Qualité (SMQ)', href: '/kpi-report/smq' },
+      { name: 'Sécurité (SST)', href: '/kpi-report/sst' },
+      { name: 'Environnement (AES)', href: '/kpi-report/aes' },
     ],
   },
   { name: 'Fournisseurs', href: '/fournisseurs', icon: FournisseurIcon },
-  { name: 'Validations', href: '/validations', icon: ValidationIcon },
   {
     name: 'Administration',
     icon: SettingsIcon,
@@ -309,7 +307,7 @@ function RiskIcon({ className }: { className?: string }) {
   );
 }
 
-function SelfAssessmentIcon({ className }: { className?: string }) {
+function KpiReportIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
@@ -320,7 +318,7 @@ function SelfAssessmentIcon({ className }: { className?: string }) {
       <path
         strokeLinecap='round'
         strokeLinejoin='round'
-        d='M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15a2.251 2.251 0 0 1 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75'
+        d='M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z'
       />
     </svg>
   );
@@ -338,23 +336,6 @@ function FournisseurIcon({ className }: { className?: string }) {
         strokeLinecap='round'
         strokeLinejoin='round'
         d='M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25m-2.25 0h-2.25m4.5 0V3.375c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25'
-      />
-    </svg>
-  );
-}
-
-function ValidationIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      fill='none'
-      viewBox='0 0 24 24'
-      strokeWidth={1.5}
-      stroke='currentColor'>
-      <path
-        strokeLinecap='round'
-        strokeLinejoin='round'
-        d='M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15a2.251 2.251 0 0 1 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75'
       />
     </svg>
   );
@@ -524,13 +505,6 @@ export default function AdminLayout() {
         onSelect: () => navigate('/cartographie/processus'),
       },
       {
-        id: 'kpi-dashboard',
-        label: 'Tableau de bord KPI',
-        description: 'Indicateurs de pilotage',
-        category: 'Cartographie & Pilotage',
-        onSelect: () => navigate('/dashboard'),
-      },
-      {
         id: 'documents',
         label: 'Documents',
         description: 'Gestion documentaire (GED)',
@@ -671,13 +645,6 @@ export default function AdminLayout() {
         onSelect: () => navigate('/audits/auditors'),
       },
       {
-        id: 'validations',
-        label: 'Validations',
-        description: 'Demandes de validation des processus',
-        category: 'Workflow',
-        onSelect: () => navigate('/validations'),
-      },
-      {
         id: 'fournisseurs',
         label: 'Fournisseurs',
         description: 'Référentiel fournisseurs et évaluations HSQSE',
@@ -719,27 +686,6 @@ export default function AdminLayout() {
         description: 'Cartographie par processus (ISO 9001)',
         category: 'Risques',
         onSelect: () => navigate('/risks/reports/process-map'),
-      },
-      {
-        id: 'self-assessment-config',
-        label: 'Auto-évaluation — Configuration',
-        description: "Grilles, axes et questions d'auto-évaluation QSE",
-        category: 'Auto-évaluation',
-        onSelect: () => navigate('/self-assessment/config'),
-      },
-      {
-        id: 'self-assessment-campaigns',
-        label: 'Auto-évaluation — Campagnes',
-        description: "Lancer et suivre les campagnes d'auto-évaluation",
-        category: 'Auto-évaluation',
-        onSelect: () => navigate('/self-assessment/campaigns'),
-      },
-      {
-        id: 'self-assessment-dashboard',
-        label: 'Auto-évaluation — Dashboard Maturité',
-        description: 'Scores de maturité, radar, classement et évolution',
-        category: 'Auto-évaluation',
-        onSelect: () => navigate('/self-assessment/dashboard'),
       },
       {
         id: 'configuration',

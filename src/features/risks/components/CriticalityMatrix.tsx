@@ -6,9 +6,18 @@ import type { MatrixData, MatrixCell } from '../types';
 interface Props {
   data: MatrixData | undefined;
   isLoading: boolean;
+  title?: string;
+  clickable?: boolean;
+  footerHint?: string;
 }
 
-export default function CriticalityMatrix({ data, isLoading }: Props) {
+export default function CriticalityMatrix({
+  data,
+  isLoading,
+  title = 'Matrice de Criticité F × G',
+  clickable = true,
+  footerHint = 'Cliquer sur une cellule pour voir les risques correspondants',
+}: Props) {
   const navigate = useNavigate();
 
   const grid = useMemo(() => {
@@ -30,7 +39,7 @@ export default function CriticalityMatrix({ data, isLoading }: Props) {
 
   return (
     <Card>
-      <CardHeader title="Matrice de Criticité F × G" />
+      <CardHeader title={title} />
       <div className="overflow-x-auto p-4 pt-0">
         <div className="mb-4 min-w-[720px]">
           <div className="flex items-center pl-32">
@@ -92,8 +101,9 @@ export default function CriticalityMatrix({ data, isLoading }: Props) {
                     <MatrixCellView
                       key={`${frequency.value}-${severity.value}`}
                       cell={cell}
+                      clickable={clickable}
                       onClick={() => {
-                        if (cell && cell.riskCount > 0) {
+                        if (clickable && cell && cell.riskCount > 0) {
                           navigate(`/risks?frequency=${frequency.value}&severity=${severity.value}`);
                         }
                       }}
@@ -108,7 +118,7 @@ export default function CriticalityMatrix({ data, isLoading }: Props) {
         </div>
 
         <div className="mt-4 flex items-center gap-4 text-xs text-gray-500">
-          <span>Cliquer sur une cellule pour voir les risques correspondants</span>
+          <span>{footerHint}</span>
           <span className="flex items-center gap-1">
             <span className="inline-block h-3 w-3 rounded" style={{ backgroundColor: '#9CA3AF' }} />
             Non classifié
@@ -121,9 +131,11 @@ export default function CriticalityMatrix({ data, isLoading }: Props) {
 
 function MatrixCellView({
   cell,
+  clickable,
   onClick,
 }: {
   cell: MatrixCell | undefined;
+  clickable: boolean;
   onClick: () => void;
 }) {
   if (!cell) {
@@ -135,12 +147,13 @@ function MatrixCellView({
   }
 
   const hasRisks = cell.riskCount > 0;
+  const isInteractive = clickable && hasRisks;
 
   return (
     <td
       onClick={onClick}
       className={`border border-gray-200 px-2 py-3 text-center align-middle transition-transform dark:border-gray-700 ${
-        hasRisks ? 'cursor-pointer hover:scale-[1.02]' : ''
+        isInteractive ? 'cursor-pointer hover:scale-[1.02]' : ''
       }`}
       style={{ backgroundColor: cell.color }}
       title={`${cell.label} — F=${cell.frequency} × G=${cell.severity} = ${cell.score} — ${cell.riskCount} risque(s)`}>

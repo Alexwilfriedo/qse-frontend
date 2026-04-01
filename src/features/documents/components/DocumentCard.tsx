@@ -59,7 +59,10 @@ function mapDomaine(
   return map[domaine];
 }
 
-export function DocumentCard({ document, isLoading }: DocumentCardProps) {
+export function DocumentCard({
+  document,
+  isLoading,
+}: DocumentCardProps) {
   if (isLoading) {
     return (
       <Card>

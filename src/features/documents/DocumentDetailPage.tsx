@@ -129,29 +129,44 @@ export default function DocumentDetailPage() {
         />
       )}
 
-      {document && (document.hasFile || isModifiable) && (
+      {document && (
         <Card>
-          <div className='p-4 flex items-center justify-between'>
-            <div>
-              <h4 className='text-sm font-medium text-gray-900 dark:text-white'>
-                Fichier joint
-              </h4>
-              {document.hasFile ? (
-                <p className='text-sm text-gray-500 dark:text-gray-400 mt-1'>
-                  {document.fichierNom} (
-                  {((document.fichierTaille ?? 0) / 1024).toFixed(1)} Ko)
-                </p>
+          <div className='flex items-center justify-between gap-4 p-5'>
+            <div className='space-y-2'>
+              <p className='text-xs font-semibold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400'>
+                Document joint
+              </p>
+              {document.hasFile || document.fichierNom ? (
+                <>
+                  <h4 className='text-base font-semibold text-gray-900 dark:text-white'>
+                    Télécharger le document source
+                  </h4>
+                  <button
+                    type='button'
+                    onClick={handleDownload}
+                    className='text-left text-sm font-medium text-brand-600 hover:text-brand-700 hover:underline'>
+                    {document.fichierNom}
+                  </button>
+                  <p className='text-sm text-gray-500 dark:text-gray-400'>
+                    Taille : {((document.fichierTaille ?? 0) / 1024).toFixed(1)} Ko
+                  </p>
+                </>
               ) : (
-                <p className='text-sm text-gray-400 dark:text-gray-500 mt-1'>
-                  Aucun fichier attaché
-                </p>
+                <>
+                  <h4 className='text-base font-semibold text-gray-900 dark:text-white'>
+                    Aucun document joint
+                  </h4>
+                  <p className='text-sm text-gray-400 dark:text-gray-500'>
+                    Ajoute un fichier pour permettre son téléchargement depuis cette fiche.
+                  </p>
+                </>
               )}
             </div>
             <div className='flex gap-2'>
-              {document.hasFile && (
-                <Button size='sm' variant='secondary' onClick={handleDownload}>
+              {(document.hasFile || document.fichierNom) && (
+                <Button size='sm' onClick={handleDownload}>
                   <Download className='w-4 h-4 mr-1' />
-                  Télécharger
+                  Télécharger le document
                 </Button>
               )}
               {isModifiable && (

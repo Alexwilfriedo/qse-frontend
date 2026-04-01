@@ -94,7 +94,7 @@ export default function RiskMeasuresPanel({ riskId }: Props) {
   return (
     <Card>
       <CardHeader
-        title='Dispositif de maitrise des risques'
+        title='Actions de maitrise'
         action={
           <Button size='sm' onClick={() => setModalOpen(true)}>
             <Plus className='mr-1 h-3.5 w-3.5' />

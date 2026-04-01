@@ -54,6 +54,11 @@ import {
   StrategyDashboardPage,
 } from './features/strategy';
 import { StrategicDocumentType } from './features/strategy/types';
+import {
+  KpiReportAesPage,
+  KpiReportSmqPage,
+  KpiReportSstPage,
+} from './features/kpi-report';
 import DashboardPage from './pages/DashboardPage';
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -119,6 +124,9 @@ function App() {
           <Route path='/documents/:id' element={<DocumentDetailPage />} />
           <Route path='/documents/:id/edit' element={<DocumentEditPage />} />
           <Route path='/dashboard' element={<DashboardPage />} />
+          <Route path='/kpi-report/smq' element={<KpiReportSmqPage />} />
+          <Route path='/kpi-report/sst' element={<KpiReportSstPage />} />
+          <Route path='/kpi-report/aes' element={<KpiReportAesPage />} />
           <Route path='/validations' element={<ValidationsPage />} />
           <Route path='/audits' element={<CampaignsPage />} />
           <Route
