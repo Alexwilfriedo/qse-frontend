@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 56" fill="none">
+  <!-- Shield Shape -->
+  <path 
+    d="M24 4L44 12V28C44 42 24 54 24 54C24 54 4 42 4 28V12L24 4Z" 
+    fill="#EE7849"
+  />
+  
+  <!-- Inner Shield -->
+  <path 
+    d="M24 8L40 14V27C40 38 24 48 24 48C24 48 8 38 8 27V14L24 8Z" 
+    fill="#FFFFFF"
+  />
+  
+  <!-- Checkmark -->
+  <path 
+    d="M15 27L21 33L33 21" 
+    stroke="#EE7849" 
+    stroke-width="4" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+    fill="none"
+  />
+</svg>

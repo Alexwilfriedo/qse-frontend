@@ -1,0 +1,10 @@
+export { default as DuerpPage } from './DuerpPage';
+export { default as EnvironmentalPage } from './EnvironmentalPage';
+export { default as MeasuresPage } from './MeasuresPage';
+export { default as OpportunityDetailPage } from './OpportunityDetailPage';
+export { default as OpportunitiesPage } from './OpportunitiesPage';
+export { default as ProcessRiskMapPage } from './ProcessRiskMapPage';
+export { default as RiskConfigPage } from './RiskConfigPage';
+export { default as RiskDetailPage } from './RiskDetailPage';
+export { default as RiskMatrixPage } from './RiskMatrixPage';
+export { default as RisksPage } from './RisksPage';
