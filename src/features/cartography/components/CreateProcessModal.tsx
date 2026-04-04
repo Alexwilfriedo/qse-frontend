@@ -1,7 +1,7 @@
 import { Button, DatePicker, Input, Modal, Select } from '@/components/ui';
 import { useUsers } from '@/features/admin/hooks/useUsers';
 import { useState } from 'react';
-import { useCreateProcess, useEntityTree } from '../hooks';
+import { useCreateProcess, useEntityTree, useProcessMap } from '../hooks';
 import type { CreateProcessRequest, ProcessType } from '../processTypes';
 import { PROCESS_TYPES } from '../processTypes';
 import type { EntityTreeNode } from '../types';
@@ -16,6 +16,8 @@ const EMPTY_FORM: CreateProcessRequest = {
   type: 'REALISATION',
   piloteId: '',
   managerId: '',
+  inputInteractionProcessIds: [],
+  outputInteractionProcessIds: [],
 };
 
 export function CreateProcessModal({
@@ -26,6 +28,7 @@ export function CreateProcessModal({
   const createProcess = useCreateProcess();
   const { data: users } = useUsers();
   const { data: entityTree } = useEntityTree();
+  const { data: processMap } = useProcessMap();
 
   const userOptions = (users ?? []).map((u) => ({
     value: u.id,
@@ -40,6 +43,14 @@ export function CreateProcessModal({
       ...flattenTree(n.children),
     ]);
   const entityOptions = entityTree ? flattenTree(entityTree) : [];
+  const relatedProcessOptions = processMap
+    ? [...processMap.management, ...processMap.realisation, ...processMap.support].map(
+        (process) => ({
+          value: process.id,
+          label: `${process.codification} - ${process.nom}`,
+        }),
+      )
+    : [];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,6 +59,16 @@ export function CreateProcessModal({
         ...form,
         description: form.description || undefined,
         entityId: form.entityId || undefined,
+        inputInteractionProcessIds:
+          form.inputInteractionProcessIds &&
+          form.inputInteractionProcessIds.length > 0
+            ? form.inputInteractionProcessIds
+            : undefined,
+        outputInteractionProcessIds:
+          form.outputInteractionProcessIds &&
+          form.outputInteractionProcessIds.length > 0
+            ? form.outputInteractionProcessIds
+            : undefined,
         createdAt: form.createdAt
           ? new Date(form.createdAt).toISOString()
           : undefined,
@@ -146,6 +167,114 @@ export function CreateProcessModal({
               placeholder='Aucune'
               options={entityOptions}
             />
+          </div>
+        )}
+
+        {relatedProcessOptions.length > 0 && (
+          <div className='space-y-4 rounded-xl border border-gray-200 p-4 dark:border-gray-700'>
+            <div>
+              <p className='text-sm font-medium text-gray-700 dark:text-gray-300'>
+                Interactions entre processus
+              </p>
+              <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+                Distingue les interactions qui alimentent ce processus de celles
+                qu&apos;il envoie vers les autres.
+              </p>
+            </div>
+
+            <div className='grid gap-4 xl:grid-cols-2'>
+              <div className='space-y-3'>
+                <div>
+                  <p className='text-sm font-semibold text-gray-800 dark:text-gray-200'>
+                    Interactions en entrée
+                  </p>
+                  <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+                    Processus qui envoient des éléments vers ce processus.
+                  </p>
+                </div>
+                <div className='grid max-h-48 grid-cols-1 gap-2 overflow-y-auto pr-1'>
+                  {relatedProcessOptions.map((process) => {
+                    const checked = form.inputInteractionProcessIds?.includes(
+                      process.value,
+                    );
+                    return (
+                      <label
+                        key={`in-${process.value}`}
+                        className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2 text-sm transition-colors ${
+                          checked
+                            ? 'border-blue-300 bg-blue-50 text-blue-800 dark:border-blue-700 dark:bg-blue-950/30 dark:text-blue-200'
+                            : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300'
+                        }`}>
+                        <input
+                          type='checkbox'
+                          checked={checked}
+                          onChange={(e) =>
+                            set('inputInteractionProcessIds')(
+                              e.target.checked
+                                ? [
+                                    ...(form.inputInteractionProcessIds ?? []),
+                                    process.value,
+                                  ]
+                                : (form.inputInteractionProcessIds ?? []).filter(
+                                    (id) => id !== process.value,
+                                  ),
+                            )
+                          }
+                          className='h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500'
+                        />
+                        <span>{process.label}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className='space-y-3'>
+                <div>
+                  <p className='text-sm font-semibold text-gray-800 dark:text-gray-200'>
+                    Interactions en sortie
+                  </p>
+                  <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+                    Processus vers lesquels ce processus envoie des éléments.
+                  </p>
+                </div>
+                <div className='grid max-h-48 grid-cols-1 gap-2 overflow-y-auto pr-1'>
+                  {relatedProcessOptions.map((process) => {
+                    const checked = form.outputInteractionProcessIds?.includes(
+                      process.value,
+                    );
+                    return (
+                      <label
+                        key={`out-${process.value}`}
+                        className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2 text-sm transition-colors ${
+                          checked
+                            ? 'border-orange-300 bg-orange-50 text-orange-800 dark:border-orange-700 dark:bg-orange-950/30 dark:text-orange-200'
+                            : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300'
+                        }`}>
+                        <input
+                          type='checkbox'
+                          checked={checked}
+                          onChange={(e) =>
+                            set('outputInteractionProcessIds')(
+                              e.target.checked
+                                ? [
+                                    ...(form.outputInteractionProcessIds ?? []),
+                                    process.value,
+                                  ]
+                                : (
+                                    form.outputInteractionProcessIds ?? []
+                                  ).filter((id) => id !== process.value),
+                            )
+                          }
+                          className='h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500'
+                        />
+                        <span>{process.label}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         )}
 

@@ -2,7 +2,7 @@ export type ProcessType = 'MANAGEMENT' | 'REALISATION' | 'SUPPORT';
 
 export type ProcessStatut = 'EN_VIGUEUR' | 'EN_REVISION' | 'OBSOLETE';
 
-export type ProcessLinkType = 'FOURNISSEUR' | 'CLIENT';
+export type ProcessLinkType = 'FOURNISSEUR' | 'CLIENT' | 'INTERACTION';
 
 export interface ProcessView {
   id: string;
@@ -55,6 +55,8 @@ export interface CreateProcessRequest {
   managerId: string;
   entityId?: string;
   processusCle?: boolean;
+  inputInteractionProcessIds?: string[];
+  outputInteractionProcessIds?: string[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -139,6 +141,7 @@ export const PROCESS_TYPES: {
 export const LINK_TYPES: { value: ProcessLinkType; label: string }[] = [
   { value: 'FOURNISSEUR', label: 'Fournisseur' },
   { value: 'CLIENT', label: 'Client' },
+  { value: 'INTERACTION', label: 'Interaction' },
 ];
 
 // ========== Maturité ==========

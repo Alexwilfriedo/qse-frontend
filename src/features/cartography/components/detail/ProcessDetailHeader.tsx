@@ -1,7 +1,7 @@
 import { Badge, Button } from '@/components/ui';
 import type { ProcessView } from '../../processTypes';
 import { PROCESS_STATUTS, PROCESS_TYPES } from '../../processTypes';
-import { ArrowLeft, ClipboardCheck, Edit2, Star } from 'lucide-react';
+import { ArrowLeft, ClipboardCheck, Edit2, Star, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const TYPE_ACCENT: Record<string, string> = {
@@ -13,9 +13,16 @@ const TYPE_ACCENT: Record<string, string> = {
 interface Props {
   process: ProcessView;
   onEvaluateMaturity?: () => void;
+  onDelete?: () => void;
+  isDeleting?: boolean;
 }
 
-export function ProcessDetailHeader({ process, onEvaluateMaturity }: Props) {
+export function ProcessDetailHeader({
+  process,
+  onEvaluateMaturity,
+  onDelete,
+  isDeleting = false,
+}: Props) {
   const typeInfo = PROCESS_TYPES.find((t) => t.value === process.type);
   const statutInfo = PROCESS_STATUTS.find((s) => s.value === process.statut);
   const accent = TYPE_ACCENT[process.type] ?? 'from-gray-500 to-gray-600';
@@ -87,6 +94,15 @@ export function ProcessDetailHeader({ process, onEvaluateMaturity }: Props) {
 
           {/* Actions */}
           <div className='flex items-center gap-2 shrink-0'>
+            {onDelete && (
+              <Button
+                variant='destructive'
+                onClick={onDelete}
+                isLoading={isDeleting}>
+                <Trash2 className='w-4 h-4 mr-2' />
+                Supprimer
+              </Button>
+            )}
             {onEvaluateMaturity && (
               <Button variant='secondary' onClick={onEvaluateMaturity}>
                 <ClipboardCheck className='w-4 h-4 mr-2' />

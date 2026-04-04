@@ -58,8 +58,8 @@ function applyDagreLayout(nodes: Node[], edges: Edge[]): Node[] {
   g.setDefaultEdgeLabel(() => ({}));
   g.setGraph({
     rankdir: 'TB',
-    nodesep: 40,
-    ranksep: 80,
+    nodesep: 28,
+    ranksep: 70,
     marginx: 20,
     marginy: 20,
   });
@@ -86,6 +86,14 @@ function applyDagreLayout(nodes: Node[], edges: Edge[]): Node[] {
   });
 }
 
+function getSubtreeHeight(nodes: Node[]) {
+  if (nodes.length === 0) return 0;
+  return (
+    Math.max(...nodes.map((node) => node.position.y + NODE_HEIGHT)) -
+    Math.min(...nodes.map((node) => node.position.y))
+  );
+}
+
 export function useOrgChartLayout(
   tree: EntityTreeNode[] | undefined,
   callbacks: LayoutCallbacks,
@@ -93,9 +101,26 @@ export function useOrgChartLayout(
   return useMemo(() => {
     if (!tree || tree.length === 0) return { nodes: [], edges: [] };
 
-    const { nodes, edges } = flattenTree(tree, callbacks);
-    const layoutNodes = applyDagreLayout(nodes, edges);
+    let yOffset = 0;
+    const groupedNodes: Node[] = [];
+    const groupedEdges: Edge[] = [];
 
-    return { nodes: layoutNodes, edges };
+    for (const root of tree) {
+      const { nodes, edges } = flattenTree([root], callbacks);
+      const layoutNodes = applyDagreLayout(nodes, edges).map((node) => ({
+        ...node,
+        position: {
+          x: node.position.x,
+          y: node.position.y + yOffset,
+        },
+      }));
+
+      groupedNodes.push(...layoutNodes);
+      groupedEdges.push(...edges);
+
+      yOffset += getSubtreeHeight(layoutNodes) + 120;
+    }
+
+    return { nodes: groupedNodes, edges: groupedEdges };
   }, [tree, callbacks]);
 }

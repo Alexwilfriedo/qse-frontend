@@ -1,5 +1,5 @@
 import dagre from '@dagrejs/dagre';
-import type { Edge, Node } from '@xyflow/react';
+import { MarkerType, type Edge, type Node } from '@xyflow/react';
 import { useMemo } from 'react';
 import type { ProcessMapView } from '../../processTypes';
 import type { ProcessMapNodeData } from './ProcessMapNode';
@@ -48,15 +48,34 @@ function buildNodesAndEdges(
   }
 
   for (const link of map.links) {
+    const interactionColor = '#ea580c';
     edges.push({
       id: link.id,
       source: link.sourceProcessId,
       target: link.targetProcessId,
       type: 'smoothstep',
       animated: true,
-      label: link.linkType === 'FOURNISSEUR' ? 'Fournisseur' : 'Client',
-      labelStyle: { fontSize: 10, fill: '#6b7280' },
-      style: { stroke: '#9ca3af', strokeWidth: 1.5 },
+      label:
+        link.linkType === 'FOURNISSEUR'
+          ? 'Fournisseur'
+          : link.linkType === 'CLIENT'
+            ? 'Client'
+            : 'Interaction',
+      labelStyle: {
+        fontSize: link.linkType === 'INTERACTION' ? 11 : 10,
+        fill: link.linkType === 'INTERACTION' ? interactionColor : '#6b7280',
+        fontWeight: link.linkType === 'INTERACTION' ? 700 : 500,
+      },
+      style: {
+        stroke: link.linkType === 'INTERACTION' ? interactionColor : '#9ca3af',
+        strokeWidth: link.linkType === 'INTERACTION' ? 3 : 1.5,
+      },
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        color: link.linkType === 'INTERACTION' ? interactionColor : '#9ca3af',
+        width: link.linkType === 'INTERACTION' ? 24 : 18,
+        height: link.linkType === 'INTERACTION' ? 24 : 18,
+      },
     });
   }
 
